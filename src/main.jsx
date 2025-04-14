@@ -6,9 +6,12 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout/Layout.jsx'
 import { HeroUIProvider } from "@heroui/react";
+import { ToastProvider } from '@heroui/react'
 import HomePage from './components/Home/Home.jsx'
 import LoginPage from './components/Login/Login.jsx'
 import SignupPage from './components/Signup/Signup.jsx'
+import OwnerDashboard from './components/Dashboard/OwnerDashboard.jsx'
+import TenantDashboard from './components/Dashboard/TenantDashboard.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,12 +19,15 @@ const router = createBrowserRouter(
       <Route path='' element={<HomePage/>} />
       <Route path='/login' element={<LoginPage/>} />
       <Route path='/signup' element={<SignupPage/>} />
+      <Route path='/owner-dashboard' element={<OwnerDashboard/>} />
+      <Route path='/tenant-dashboard' element={<TenantDashboard/>} />
     </Route>
   )
 )
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <HeroUIProvider>
+    <ToastProvider />
     <StrictMode>
       <RouterProvider router={router} />
     </StrictMode>
