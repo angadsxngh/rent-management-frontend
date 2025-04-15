@@ -12,6 +12,8 @@ import LoginPage from './components/Login/Login.jsx'
 import SignupPage from './components/Signup/Signup.jsx'
 import OwnerDashboard from './components/Dashboard/OwnerDashboard.jsx'
 import TenantDashboard from './components/Dashboard/TenantDashboard.jsx'
+import PropertyCard from './components/Property/PropertyCard.jsx'
+import AddProperty from './components/Property/AddProperty.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +23,8 @@ const router = createBrowserRouter(
       <Route path='/signup' element={<SignupPage/>} />
       <Route path='/owner-dashboard' element={<OwnerDashboard/>} />
       <Route path='/tenant-dashboard' element={<TenantDashboard/>} />
+      <Route path='/card' element={<PropertyCard/>} />
+      <Route path='/add-property' element={<AddProperty />} />
     </Route>
   )
 )

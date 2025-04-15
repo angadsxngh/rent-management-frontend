@@ -12,6 +12,12 @@ export default function Header() {
 
   const navigate = useNavigate();
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    setIsLoggedIn(!user)
+}, [user])
+
   const logoutUser = async () => {
     let res = await fetch("/api/v1/owners/logout", {
       method: "POST",
@@ -32,25 +38,29 @@ export default function Header() {
     }
 
     setUser(null);
-    setTenant(null);
     localStorage.removeItem("user");
   };
 
-  const handleClick = async (e) => {
-    e.preventDefault;
+  const handleClick = async () => {
+    console.log(1)
+    console.log(1)
     await logoutUser();
-
-    if (logoutTenant) {
-      await logoutTenant;
-
+    console.log(1)
+    
+    if (logout) {
+      await logout();
+      console.log(1)
+      
       addToast({
         title: "User logged out",
       });
+      console.log(1)
+      setIsLoggedIn(false)
     }
   };
 
   return (
-    <header className="w-full fixed z-50 px-6 py-4 bg-white shadow-md flex justify-between items-center">
+    <header className="w-full fixed z-50 px-6 py-6 bg-white shadow-md flex justify-between items-center">
       <h1 className="text-2xl font-bold text-indigo-700">RentEase</h1>
       <nav className="space-x-6 hidden md:block">
         <a
@@ -74,22 +84,22 @@ export default function Header() {
       </nav>
       {!user && (
         <NavLink to={"/login"}>
-          <Button variant="outline" className="flex items-center gap-2">
+          <button variant="outline" className="flex items-center gap-2 font-semibold">
             <LogIn className="h-5 w-5" />
             Login
-          </Button>
+          </button>
         </NavLink>
       )}
       {user && (
-        <NavLink to={''}>
-          <Button
-            onPress={handleClick}
+        <NavLink to={'/'}>
+          <button
+            onClick={handleClick}
             variant="outline"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 font-semibold"
           >
             <LogIn className="h-5 w-5" />
             Logout
-          </Button>
+          </button>
         </NavLink>
       )}
     </header>

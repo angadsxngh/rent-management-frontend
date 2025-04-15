@@ -3,14 +3,41 @@ import { createContext, useContext, useEffect, useState } from "react";
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
+  const [properties, setProperties] = useState([])
+
   useEffect(() => {
     fetchUser();
   }, []);
+
+  useEffect(() => {
+  }, [properties])
+
+  const fetchProperties = async() => {
+    try {
+      const response = await fetch('/api/v1/owners/your-properties', {
+        method: 'GET',
+        credentials: 'include'
+      })
+
+      if(response.ok){
+        const res = await response.json();
+        console.log("context log", res)
+        setProperties(res || [])
+        console.log("context properties",properties)
+      } else{
+        throw new Error('failed to fetch properties')
+      }
+    } catch (error) { 
+      console.log("failed to fetch properties")
+      setProperties([])
+    }
+  }
 
   const fetchUser = async () => {
     try {
@@ -57,8 +84,6 @@ export const UserProvider = ({ children }) => {
 
           setUser(null);
           localStorage.removeItem("user");
-          await fetchUser();
-
       } 
 
 
@@ -72,8 +97,10 @@ export const UserProvider = ({ children }) => {
       value={{
         user,
         setUser,
-        logout: logout,
+        logout,
         refreshUser: fetchUser,
+        properties,
+        refreshProperties: fetchProperties
       }}
     >
       {children}
