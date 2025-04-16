@@ -4,6 +4,8 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
 
+  // const [owner, setOwner] = useState(false)
+
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
@@ -27,9 +29,7 @@ export const UserProvider = ({ children }) => {
 
       if(response.ok){
         const res = await response.json();
-        console.log("context log", res)
         setProperties(res || [])
-        console.log("context properties",properties)
       } else{
         throw new Error('failed to fetch properties')
       }
@@ -58,8 +58,9 @@ export const UserProvider = ({ children }) => {
       }
 
       const res = await response.json();
-      console.log(res.user);
-      setUser(res.user || null);
+      const isOwner = !res.user.rentDue
+      const enrichedUser = { ...res.user, owner: isOwner}
+      setUser(res.user,{ owner: isOwner} || null);
       if (res.user) {
         localStorage.setItem("user", JSON.stringify(res.user));
       }

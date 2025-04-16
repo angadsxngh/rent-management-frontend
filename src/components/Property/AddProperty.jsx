@@ -132,7 +132,6 @@ export default function AddProperty() {
       })
       navigate("/owner-dashboard");
     } catch (err) {
-      // setError(err.message);
       addToast({
         title: "An error occured",
         description: `${err.message}`,
@@ -149,7 +148,7 @@ export default function AddProperty() {
     );
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-20 px-6 flex justify-center">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 py-32 to-indigo-100  px-6 flex justify-center">
       <Card className="w-full max-w-3xl shadow-xl rounded-2xl">
         <CardBody className="p-8">
           <h2 className="text-2xl font-bold text-indigo-700 mb-6 flex items-center">
@@ -175,7 +174,7 @@ export default function AddProperty() {
             <Autocomplete
               label="Country"
               inputValue={countryQuery}
-              value={formData.country}
+              value={countryQuery}
               onChange={handleChange}
               onInputChange={setCountryQuery}
               selectedKey={country?.isoCode}
@@ -195,7 +194,7 @@ export default function AddProperty() {
             <Autocomplete
               label="State"
               inputValue={stateQuery}
-              value={state?.isoCode || ""}
+              value={stateQuery || ""}
               onInputChange={setStateQuery}
               onChange={handleChange}
               selectedKey={state?.isoCode}

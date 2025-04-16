@@ -1,10 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Button } from "@heroui/react";
-import { LogIn } from "lucide-react";
+import { LogIn, Menu, LayoutDashboard, Plus, BookOpen, LogOut } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
-import { addToast } from "@heroui/react";
+import {
+  addToast,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@heroui/react";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
@@ -12,11 +18,11 @@ export default function Header() {
 
   const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    setIsLoggedIn(!user)
-}, [user])
+    setIsLoggedIn(!user);
+  }, [user]);
 
   const logoutUser = async () => {
     let res = await fetch("/api/v1/owners/logout", {
@@ -42,22 +48,46 @@ export default function Header() {
   };
 
   const handleClick = async () => {
-    console.log(1)
-    console.log(1)
+    console.log(1);
+    console.log(1);
     await logoutUser();
-    console.log(1)
-    
+    console.log(1);
+
     if (logout) {
       await logout();
-      console.log(1)
-      
+      console.log(1);
+
       addToast({
         title: "User logged out",
       });
-      console.log(1)
-      setIsLoggedIn(false)
+      console.log(1);
+      setIsLoggedIn(false);
     }
   };
+
+  const navItems = [
+    {
+      name: "Dashboard",
+      icon: <LayoutDashboard className="w-5 h-5" />,
+      to: "/owner-dashboard",
+    },
+    {
+      name: "Add Property",
+      icon: <Plus className="w-5 h-5" />,
+      to: "/add-property",
+    },
+    {
+      name: "Passbook",
+      icon: <BookOpen className="w-5 h-5" />,
+      to: "/passbook",
+    },
+    {
+      name: "Logout",
+      icon: <LogOut className="w-5 h-5" />,
+      to: "/",
+      onClick: logout,
+    },
+  ];
 
   return (
     <header className="w-full fixed z-50 px-6 py-6 bg-white shadow-md flex justify-between items-center">
@@ -84,24 +114,99 @@ export default function Header() {
       </nav>
       {!user && (
         <NavLink to={"/login"}>
-          <button variant="outline" className="flex items-center gap-2 font-semibold">
+          <button
+            variant="outline"
+            className="flex items-center gap-2 font-semibold"
+          >
             <LogIn className="h-5 w-5" />
             Login
           </button>
         </NavLink>
       )}
-      {user && (
-        <NavLink to={'/'}>
-          <button
-            onClick={handleClick}
-            variant="outline"
-            className="flex items-center gap-2 font-semibold"
-          >
-            <LogIn className="h-5 w-5" />
-            Logout
-          </button>
-        </NavLink>
+      {user&& (
+        <div className="">
+          <NavLink to={"/"}>
+            <button
+              onClick={handleClick}
+              variant="outline"
+              className="md:flex items-center gap-2 font-semibold hidden"
+            >
+              <LogIn className="h-5 w-5" />
+              Logout
+            </button>
+          </NavLink>
+          <Dropdown className="">
+            <DropdownTrigger>
+              <Button className="md:hidden" variant="outline">
+                <Menu />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Static Actions">
+              {navItems.map((item, idx) => (
+                <DropdownItem key={idx}>
+                  <NavLink
+                    to={item.to}
+                    onClick={item.onClick}
+                    className={({ isActive }) =>
+                      `flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition 
+                ${
+                  isActive
+                    ? "bg-indigo-100 text-indigo-700"
+                    : "text-gray-600 hover:bg-indigo-50"
+                }`
+                    }
+                  >
+                    {item.icon}
+                    <span>{item.name}</span>
+                  </NavLink>
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
+        </div>
       )}
+      {/* {user.rentDue !== 0 && (
+        <div className="">
+          <NavLink to={"/"}>
+            <button
+              onClick={handleClick}
+              variant="outline"
+              className="md:flex items-center gap-2 font-semibold hidden"
+            >
+              <LogIn className="h-5 w-5" />
+              Logout
+            </button>
+          </NavLink>
+          <Dropdown className="">
+            <DropdownTrigger>
+              <Button className="md:hidden" variant="outline">
+                <Menu />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Static Actions">
+              {navItems.map((item, idx) => (
+                <DropdownItem key={idx}>
+                  <NavLink
+                    to={item.to}
+                    onClick={item.onClick}
+                    className={({ isActive }) =>
+                      `flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition 
+                ${
+                  isActive
+                    ? "bg-indigo-100 text-indigo-700"
+                    : "text-gray-600 hover:bg-indigo-50"
+                }`
+                    }
+                  >
+                    {item.icon}
+                    <span>{item.name}</span>
+                  </NavLink>
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
+        </div>
+      )} */}
     </header>
   );
 }

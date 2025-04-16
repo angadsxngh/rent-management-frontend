@@ -206,7 +206,6 @@ export default function LoginPage() {
                     isRequired
                     label="Phone"
                     name="phone"
-                    placeholder="9876543210"
                     type="text"
                   />
                   <Input
@@ -214,7 +213,6 @@ export default function LoginPage() {
                     isRequired
                     name="password"
                     label="Password"
-                    placeholder="Enter your password"
                     type="password"
                   />
                   <p className="text-center text-sm mt-6">
