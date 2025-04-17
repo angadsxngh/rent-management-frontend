@@ -49,53 +49,67 @@ export default function OwnerDashboard() {
   ];
 
   const navItems = [
-    { name: "Dashboard", icon: <LayoutDashboard className="w-5 h-5" />, to: "/owner-dashboard" },
-    { name: "Add Property", icon: <Plus className="w-5 h-5" />, to: "/add-property" },
-    { name: "Passbook", icon: <BookOpen className="w-5 h-5" />, to: "/passbook" },
-    { name: "Logout", icon: <LogOut className="w-5 h-5" />, to: "/", onClick: logout },
+    {
+      name: "Dashboard",
+      icon: <LayoutDashboard className="w-5 h-5" />,
+      to: "/owner-dashboard",
+    },
+    {
+      name: "Add Property",
+      icon: <Plus className="w-5 h-5" />,
+      to: "/add-property",
+    },
+    {
+      name: "Passbook",
+      icon: <BookOpen className="w-5 h-5" />,
+      to: "/passbook",
+    },
+    {
+      name: "Logout",
+      icon: <LogOut className="w-5 h-5" />,
+      to: "/",
+      onClick: logout,
+    },
   ];
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-blue-50 to-indigo-100">
-
       {/* Main Content */}
-      <main className="flex-1 p-10 py-32">
+      <main className="flex-1 px-4 sm:px-10 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-10"
+          className="mb-8 sm:mb-10"
         >
-          <h1 className="text-3xl font-extrabold text-indigo-700 mb-2">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-indigo-700 mb-1">
             Owner Dashboard
           </h1>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 text-base sm:text-lg">
             Your property performance at a glance
           </p>
         </motion.div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-10">
           {stats.map((item, idx) => (
             <Card key={idx} className="shadow-lg rounded-2xl">
-              <CardBody className="p-6 items-center space-x-4">
-                <div className="flex flex-col items-center justify-between">
-                  {item.icon}
-                  <p className="text-sm text-gray-500">{item.title}</p>
-                  <p className="text-xl font-bold text-indigo-800">
-                    {item.value}
-                  </p>
-                </div>
+              <CardBody className="p-6 flex flex-col items-center text-center">
+                {item.icon}
+                <p className="text-sm text-gray-500 mt-2">{item.title}</p>
+                <p className="text-xl font-bold text-indigo-800">
+                  {item.value}
+                </p>
               </CardBody>
             </Card>
           ))}
         </div>
 
         {/* Passbook + Add Property */}
-        <div className="flex flex-col md:flex-row gap-6 mb-16">
-          <Card className="shadow-md rounded-2xl w-full md:w-[70%]">
+        <div className="flex flex-col md:flex-row gap-6 mb-14">
+          <Card className="shadow-md rounded-2xl w-full md:w-2/3">
             <CardBody className="p-6">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
                 <div className="text-lg font-semibold text-indigo-700 flex items-center">
                   <BookOpen className="mr-2 h-5 w-5" /> Passbook
                 </div>
@@ -110,9 +124,9 @@ export default function OwnerDashboard() {
             </CardBody>
           </Card>
 
-          <Card className="shadow-md rounded-2xl w-full md:w-[30%]">
+          <Card className="shadow-md rounded-2xl w-full md:w-1/3">
             <CardBody className="p-6">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
                 <div className="text-lg font-semibold text-indigo-700 flex items-center">
                   <Plus className="mr-2 h-5 w-5" /> Add Property
                 </div>
@@ -130,8 +144,8 @@ export default function OwnerDashboard() {
         </div>
 
         {/* Property Listings */}
-        <div className="w-full max-w-screen-2xl">
-          <h2 className="text-2xl font-bold text-indigo-700 mb-6">
+        <div className="w-full">
+          <h2 className="text-xl sm:text-2xl font-bold text-indigo-700 mb-6">
             Property Listings
           </h2>
           <OwnerProperties />

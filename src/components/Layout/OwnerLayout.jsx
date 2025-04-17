@@ -1,24 +1,44 @@
 // components/Layout/OwnerLayout.jsx
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import {
-  LayoutDashboard,
-  Plus,
-  Bell,
-  BookOpen,
-  LogOut,
-} from "lucide-react";
+import { LayoutDashboard, Plus, Bell, BookOpen, LogOut, BellDot } from "lucide-react";
 import { useUser } from "../../context/UserContext";
 
 export default function OwnerLayout() {
-  const { user, logout } = useUser();
+  const { user, logout, requests } = useUser();
 
   const navItems = [
-    { name: "Dashboard", icon: <LayoutDashboard className="w-5 h-5" />, to: "/owner-dashboard" },
-    { name: "Alerts", icon: <Bell className="w-5 h-5"/>, to: "/alerts"},
-    { name: "Add Property", icon: <Plus className="w-5 h-5" />, to: "/add-property" },
-    { name: "Passbook", icon: <BookOpen className="w-5 h-5" />, to: "/passbook" },
-    { name: "Logout", icon: <LogOut className="w-5 h-5" />, to: "/", onClick: logout },
+    {
+      name: "Dashboard",
+      icon: <LayoutDashboard className="w-5 h-5" />,
+      to: "/owner-dashboard",
+    },
+    {
+      name: "Alerts",
+      icon:
+        requests.length > 0 ? (
+          <BellDot className="w-5 h-5" />
+        ) : (
+          <Bell className="w-5 h-5" />
+        ),
+      to: "/owner-alerts",
+    },
+    {
+      name: "Add Property",
+      icon: <Plus className="w-5 h-5" />,
+      to: "/add-property",
+    },
+    {
+      name: "Passbook",
+      icon: <BookOpen className="w-5 h-5" />,
+      to: "/passbook",
+    },
+    {
+      name: "Logout",
+      icon: <LogOut className="w-5 h-5" />,
+      to: "/",
+      onClick: logout,
+    },
   ];
 
   return (
@@ -37,7 +57,11 @@ export default function OwnerLayout() {
               onClick={item.onClick}
               className={({ isActive }) =>
                 `flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition 
-                ${isActive ? "bg-indigo-100 text-indigo-700" : "text-gray-600 hover:bg-indigo-50"}`
+                ${
+                  isActive
+                    ? "bg-indigo-100 text-indigo-700"
+                    : "text-gray-600 hover:bg-indigo-50"
+                }`
               }
             >
               {item.icon}

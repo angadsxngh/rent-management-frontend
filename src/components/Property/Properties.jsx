@@ -20,6 +20,7 @@ export default function OwnerProperties() {
   // 🎯 Update local state when properties from context change
   useEffect(() => {
     setProperty(properties || []);
+    console.log(properties)
     setLoading(false);
   }, [properties]);
 
@@ -80,7 +81,7 @@ export default function OwnerProperties() {
                   <br />
                   Tenant:{" "}
                   <span className="font-medium">
-                    {property.tenant?.name || "Not Rented"}
+                    {property.tenantName || "Not Rented"}
                   </span>
                 </div>
 

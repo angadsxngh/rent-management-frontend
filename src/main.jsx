@@ -26,6 +26,7 @@ import PrivateRoute from "./components/Layout/PrivateRoute.jsx";
 import OwnerLayout from "./components/Layout/OwnerLayout.jsx";
 import TenantLayout from "./components/Layout/TenantLayout.jsx";
 import OwnerAlerts from "./components/Alerts/OwnerAlerts.jsx";
+import TenantAlerts from "./components/Alerts/TenantAlerts.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,12 +39,13 @@ const router = createBrowserRouter(
           <Route path="/owner-dashboard" element={<OwnerDashboard />} />
           <Route path="/card" element={<PropertyCard />} />
           <Route path="/add-property" element={<AddProperty />} />
-          <Route path="/alerts" element={<OwnerAlerts />} />
+          <Route path="/owner-alerts" element={<OwnerAlerts />} />
         </Route>
         <Route element={<TenantLayout />}>
           <Route path="/tenant-dashboard" element={<TenantDashboard />} />
-        <Route path="/find-property" element={<FindProperty />} />
-        <Route path="/property/:id" element={<Property />} />
+          <Route path="/find-property" element={<FindProperty />} />
+          <Route path="/property/:id" element={<Property />} />
+          <Route path="/tenant-alerts" element={<TenantAlerts />} />
         </Route>
       </Route>
     </Route>

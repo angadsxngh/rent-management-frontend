@@ -7,18 +7,45 @@ import {
   Bell,
   BookOpen,
   LogOut,
+  BellDot,
 } from "lucide-react";
 import { useUser } from "../../context/UserContext";
 
 export default function TenantLayout() {
-  const { user, logout } = useUser();
+  const { user, logout, alerts } = useUser();
 
   const navItems = [
-    { name: "Dashboard", icon: <LayoutDashboard className="w-5 h-5" />, to: "/owner-dashboard" },
-    { name: "Alerts", icon: <Bell className="w-5 h-5"/>, to: "/alerts"},
-    { name: "Find Property", icon: <Search className="w-5 h-5" />, to: "/add-property" },
-    { name: "Passbook", icon: <BookOpen className="w-5 h-5" />, to: "/passbook" },
-    { name: "Logout", icon: <LogOut className="w-5 h-5" />, to: "/", onClick: logout },
+    {
+      name: "Dashboard",
+      icon: <LayoutDashboard className="w-5 h-5" />,
+      to: "/tenant-dashboard",
+    },
+    {
+      name: "Alerts",
+      icon:
+        alerts.length > 0 ? (
+          <BellDot className="w-5 h-5" />
+        ) : (
+          <Bell className="w-5 h-5" />
+        ),
+      to: "/tenant-alerts",
+    },
+    {
+      name: "Find Property",
+      icon: <Search className="w-5 h-5" />,
+      to: "/find-property",
+    },
+    {
+      name: "Passbook",
+      icon: <BookOpen className="w-5 h-5" />,
+      to: "/passbook",
+    },
+    {
+      name: "Logout",
+      icon: <LogOut className="w-5 h-5" />,
+      to: "/",
+      onClick: logout,
+    },
   ];
 
   return (
@@ -37,7 +64,11 @@ export default function TenantLayout() {
               onClick={item.onClick}
               className={({ isActive }) =>
                 `flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition 
-                ${isActive ? "bg-indigo-100 text-indigo-700" : "text-gray-600 hover:bg-indigo-50"}`
+                ${
+                  isActive
+                    ? "bg-indigo-100 text-indigo-700"
+                    : "text-gray-600 hover:bg-indigo-50"
+                }`
               }
             >
               {item.icon}

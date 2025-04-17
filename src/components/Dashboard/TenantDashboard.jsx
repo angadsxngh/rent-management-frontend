@@ -1,13 +1,24 @@
 import React, { useEffect } from "react";
 import { Card, CardBody, Button } from "@heroui/react";
 import { motion } from "framer-motion";
-import { Home, DollarSign, CalendarCheck, BookOpen, Plus, Search } from "lucide-react";
+import {
+  Home,
+  DollarSign,
+  CalendarCheck,
+  BookOpen,
+  Plus,
+  Search,
+} from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
 
 export default function TenantDashboard() {
+  const { rentals, fetchRentals } = useUser();
+
   useEffect(() => {
-    window.scroll(0,0)
-  })
+    fetchRentals();
+  });
+
   const stats = [
     {
       title: "Rent Due",
@@ -94,27 +105,68 @@ export default function TenantDashboard() {
           </CardBody>
         </Card>
       </div>
-
-      <div>
-        <h2 className="text-2xl font-bold text-indigo-700 mb-6">
-          Lease Summary
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="rounded-xl shadow hover:shadow-md transition">
-            <CardBody className="p-4">
-              <h3 className="text-lg font-semibold mb-2 text-indigo-700">
-                Lease Agreement
-              </h3>
-              <p className="text-sm text-gray-600 mb-2">
-                Duration: Jan 2024 – Dec 2024
-              </p>
-              <Button size="sm" variant="outline">
-                View Lease
-              </Button>
-            </CardBody>
-          </Card>
+      {rentals.length > 0 && (
+        <div className="mt-16 mb-16">
+          <h2 className="text-2xl font-bold text-indigo-700 mb-6">
+            Your Rented Properties
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {rentals.map((property) => (
+              <Card
+                key={property.id}
+                className="rounded-xl shadow hover:shadow-md transition"
+              >
+                <CardBody className="p-4">
+                  <div className="flex items-center space-x-4 mb-3">
+                    <img
+                      src={property.imageUrl}
+                      alt={property.address}
+                      className="h-20 w-28 object-cover rounded-lg"
+                    />
+                    <div>
+                      <h3 className="text-lg font-semibold text-indigo-700">
+                        {property.address}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {property.city}, {property.state}, {property.country}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-2">
+                    Rent: ₹{property.rentAmount.toLocaleString()}
+                  </p>
+                  <Button size="sm" variant="outline">
+                    View Details
+                  </Button>
+                </CardBody>
+              </Card>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+
+      {rentals.length > 0 && (
+        <div>
+          <h2 className="text-2xl font-bold text-indigo-700 mb-6">
+            Lease Summary
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="rounded-xl shadow hover:shadow-md transition">
+              <CardBody className="p-4">
+                <h3 className="text-lg font-semibold mb-2 text-indigo-700">
+                  Lease Agreement
+                </h3>
+                <p className="text-sm text-gray-600 mb-2">
+                  Duration: Jan 2024 – Dec 2024
+                </p>
+                <Button size="sm" variant="outline">
+                  View Lease
+                </Button>
+              </CardBody>
+            </Card>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

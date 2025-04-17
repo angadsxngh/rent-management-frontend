@@ -4,31 +4,14 @@ import { Check, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useUser } from "../../context/UserContext";
 
-export default function Alerts() {
-  const { requests, fetchRequests } = useUser();
+export default function Alerts() {  
+  const { alerts, fetchAlerts } = useUser();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchRequests();
+    fetchAlerts();
     setLoading(false)
   }, []);
-
-  const handleAccept = async (res) => {
-    await fetch(
-      `/api/v1/owners/accept-request/${res.property.id}?tenantId=${res.tenant.id}&tenantName=${res.tenant.name}`,
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
-    fetchRequests();
-  };
-
-  const handleReject = (id) => {
-    setRequests((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status: "rejected" } : r))
-    );
-  };
 
   const getStatusStyle = (status) => {
     switch (status) {
@@ -53,12 +36,14 @@ export default function Alerts() {
           Alerts & Requests
         </h1>
         <p className="text-gray-600 text-lg">
-          Manage join requests from tenants
+          View updates and stay up to date!
         </p>
       </motion.div>
 
-      {requests.length === 0 && (
-        <div className="text-gray-600 text-md">No requests available</div>
+      {alerts.length === 0 && (
+        <div className="text-gray-600 text-md">
+          No alerts available
+        </div>
       )}
 
       {loading ? (
@@ -67,14 +52,14 @@ export default function Alerts() {
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          {requests.map((req) => (
+          {alerts.map((req) => (
             <Card key={req.id} className="shadow-lg rounded-2xl">
               <CardBody className="py-4 px-6 space-y-4">
                 <div className="flex justify-between items-center">
                   {/* Info Section */}
                   <div className="flex-1 pr-4">
                     <p className="text-indigo-700 font-semibold text-lg">
-                      {req.tenant.name}
+                      {req.owner.name}
                     </p>
                     <p className="text-gray-600 text-sm">
                       {req.property.address}, {req.property.city}
@@ -103,28 +88,6 @@ export default function Alerts() {
                   >
                     {req.status}
                   </span>
-
-                  {/* Action Buttons */}
-                  {req.status === "pending" ? (
-                    <div className="flex space-x-2">
-                      <Button
-                        size="sm"
-                        className="bg-green-100 text-green-700 hover:bg-green-200"
-                        onPress={() => handleAccept(req)}
-                      >
-                        <Check className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="bg-red-100 text-red-600 hover:bg-red-200"
-                        onPress={() => handleReject(req.id)}
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ) : (
-                    <></>
-                  )}
                 </div>
               </CardBody>
             </Card>
