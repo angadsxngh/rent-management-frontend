@@ -1,7 +1,7 @@
 // components/Layout/OwnerLayout.jsx
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { LayoutDashboard, Plus, Bell, BookOpen, LogOut, BellDot } from "lucide-react";
+import { LayoutDashboard, Plus, Bell, BookOpen, LogOut, BellDot, House } from "lucide-react";
 import { useUser } from "../../context/UserContext";
 
 export default function OwnerLayout() {
@@ -24,6 +24,11 @@ export default function OwnerLayout() {
       to: "/owner-alerts",
     },
     {
+      name: "Properties",
+      icon: <House className="w-5 h-5" />,
+      to: "/owner-properties",
+    },
+    {
       name: "Add Property",
       icon: <Plus className="w-5 h-5" />,
       to: "/add-property",
@@ -31,7 +36,7 @@ export default function OwnerLayout() {
     {
       name: "Passbook",
       icon: <BookOpen className="w-5 h-5" />,
-      to: "/passbook",
+      to: "/owner-passbook",
     },
     {
       name: "Logout",

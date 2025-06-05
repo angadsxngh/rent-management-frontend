@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardBody, Button } from "@heroui/react";
-import { Check, X } from "lucide-react";
+import { Card, CardBody } from "@heroui/react";
 import { motion } from "framer-motion";
 import { useUser } from "../../context/UserContext";
+import { CalendarClock, IndianRupee } from "lucide-react";
 
-export default function Alerts() {  
+export default function Alerts() {
   const { alerts, fetchAlerts } = useUser();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchAlerts();
-    setLoading(false)
+    setLoading(false);
   }, []);
 
   const getStatusStyle = (status) => {
@@ -23,6 +23,11 @@ export default function Alerts() {
         return "bg-yellow-100 text-yellow-700";
     }
   };
+  const formatDateTime = (datetime) =>
+    new Date(datetime).toLocaleString(undefined, {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
 
   return (
     <main className="flex-1 md:p-5 py-5 md:py-24">
@@ -41,9 +46,7 @@ export default function Alerts() {
       </motion.div>
 
       {alerts.length === 0 && (
-        <div className="text-gray-600 text-md">
-          No alerts available
-        </div>
+        <div className="text-gray-600 text-md">No alerts available</div>
       )}
 
       {loading ? (
@@ -55,8 +58,8 @@ export default function Alerts() {
           {alerts.map((req) => (
             <Card key={req.id} className="shadow-lg rounded-2xl">
               <CardBody className="py-4 px-6 space-y-4">
+                {/* Header */}
                 <div className="flex justify-between items-center">
-                  {/* Info Section */}
                   <div className="flex-1 pr-4">
                     <p className="text-indigo-700 font-semibold text-lg">
                       {req.owner.name}
@@ -69,7 +72,6 @@ export default function Alerts() {
                     </p>
                   </div>
 
-                  {/* Property Image */}
                   <div className="w-20 h-20 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
                     <img
                       src={req.property.imageUrl}
@@ -79,8 +81,28 @@ export default function Alerts() {
                   </div>
                 </div>
 
+                {/* Body Content Based on Type */}
+                {req.type === "request" ? (
+                  <div>
+                    <p className="text-sm text-gray-600">
+                      Your request to join this property has been{" "}
+                      <span className="font-medium">{req.status}</span>.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-600 flex items-center gap-1">
+                      <IndianRupee className="w-4 h-4 text-indigo-500" />
+                      Payment requested:{" "}
+                      <span className="font-medium text-indigo-700">
+                        ₹{req.amount}
+                      </span>
+                    </p>
+                  </div>
+                )}
+
+                {/* Footer */}
                 <div className="flex items-center justify-between">
-                  {/* Status Badge */}
                   <span
                     className={`px-3 py-1 text-xs font-medium rounded-full capitalize ${getStatusStyle(
                       req.status
@@ -88,6 +110,10 @@ export default function Alerts() {
                   >
                     {req.status}
                   </span>
+                  <div className="flex items-center text-xs text-gray-500 gap-1">
+                    <CalendarClock className="w-4 h-4" />
+                    {formatDateTime(req.createdAt)}
+                  </div>
                 </div>
               </CardBody>
             </Card>

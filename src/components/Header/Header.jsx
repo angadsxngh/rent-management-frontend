@@ -10,6 +10,7 @@ import {
   LogOut,
   Bell,
   Search,
+  House,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
@@ -82,6 +83,11 @@ export default function Header() {
     },
     { name: "Alerts", icon: <Bell className="w-5 h-5" />, to: "/owner-alerts" },
     {
+      name: "Properties",
+      icon: <House className="w-5 h-5" />,
+      to: "/owner-properties",
+    },
+    {
       name: "Add Property",
       icon: <Plus className="w-5 h-5" />,
       to: "/add-property",
@@ -105,7 +111,16 @@ export default function Header() {
       icon: <LayoutDashboard className="w-5 h-5" />,
       to: "/tenant-dashboard",
     },
-    { name: "Alerts", icon: <Bell className="w-5 h-5" />, to: "/tenant-alerts" },
+    {
+      name: "Alerts",
+      icon: <Bell className="w-5 h-5" />,
+      to: "/tenant-alerts",
+    },
+    {
+      name: "Properties",
+      icon: <House className="w-5 h-5" />,
+      to: "/tenant-properties",
+    },
     {
       name: "Find Property",
       icon: <Search className="w-5 h-5" />,

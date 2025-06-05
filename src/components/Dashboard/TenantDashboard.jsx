@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardBody, Button } from "@heroui/react";
 import { motion } from "framer-motion";
 import {
@@ -14,15 +14,17 @@ import { useUser } from "../../context/UserContext";
 
 export default function TenantDashboard() {
   const { rentals, fetchRentals } = useUser();
-
+  const [amount, setAmount] = useState(0);
   useEffect(() => {
     fetchRentals();
-  });
+    const rentAmount = rentals.reduce((sum, p) => sum + (p.balance || 0), 0);
+    setAmount(rentAmount);
+  }, [rentals]);
 
   const stats = [
     {
       title: "Rent Due",
-      value: "₹25,000",
+      value: amount.toLocaleString("en-US"),
       icon: <DollarSign className="h-6 w-6 text-red-500" />,
     },
     {
@@ -32,13 +34,18 @@ export default function TenantDashboard() {
     },
     {
       title: "Current Property",
-      value: "2BHK - Andheri",
+      value:
+        rentals.length === 0
+          ? "No rentals"
+          : rentals.length === 1
+          ? rentals[0].address
+          : `${rentals[0].address} + ${rentals.length - 1} more`,
       icon: <Home className="h-6 w-6 text-green-600" />,
     },
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 px-6 py-32">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 px-6 py-16">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -53,22 +60,17 @@ export default function TenantDashboard() {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-10">
         {stats.map((item, idx) => (
           <Card key={idx} className="shadow-lg rounded-2xl">
-            <CardBody className="p-6 flex items-center space-x-4">
+            <CardBody className="p-6 flex flex-col items-center text-center">
               {item.icon}
-              <div>
-                <p className="text-sm text-gray-500">{item.title}</p>
-                <p className="text-xl font-bold text-indigo-800">
-                  {item.value}
-                </p>
-              </div>
+              <p className="text-sm text-gray-500 mt-2">{item.title}</p>
+              <p className="text-xl font-bold text-indigo-800">{item.value}</p>
             </CardBody>
           </Card>
         ))}
       </div>
-
       <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
         <Card className="shadow-md rounded-2xl col-span-2">
           <CardBody className="p-6">

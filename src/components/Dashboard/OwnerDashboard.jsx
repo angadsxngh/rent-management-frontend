@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardBody, Button } from "@heroui/react";
 import { motion } from "framer-motion";
 import {
@@ -17,18 +17,18 @@ import OwnerProperties from "../Property/Properties";
 
 export default function OwnerDashboard() {
   const { user, properties, logout } = useUser();
+  const [amount, setAmount] = useState(0)
   const [selectedIndex, setSelectedIndex] = useState(null);
   const selectedProperty =
     selectedIndex !== null ? properties[selectedIndex] : null;
-
   const activePropertiesCount = properties.filter(
     (p) => p.tenant === null
   ).length;
-
+  const activeproperty = properties.filter((p) => p.tenantId?.length > 0);
   const stats = [
     {
       title: "Rent Due This Month",
-      value: "₹1,20,000",
+      value: amount.toLocaleString("en-US"),
       icon: <DollarSign className="h-6 w-6 text-indigo-600" />,
     },
     {
@@ -38,7 +38,7 @@ export default function OwnerDashboard() {
     },
     {
       title: "Active Properties",
-      value: activePropertiesCount,
+      value: activeproperty.length,
       icon: <Home className="h-6 w-6 text-indigo-600" />,
     },
     {
@@ -47,7 +47,6 @@ export default function OwnerDashboard() {
       icon: <Star className="h-6 w-6 text-yellow-500" />,
     },
   ];
-
   const navItems = [
     {
       name: "Dashboard",
@@ -71,6 +70,10 @@ export default function OwnerDashboard() {
       onClick: logout,
     },
   ];
+  useEffect(() => {
+    const totalRent = activeproperty.reduce((sum, p) =>sum + (p.balance || 0), 0);
+    setAmount(totalRent);
+  }, [properties]);
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-blue-50 to-indigo-100">

@@ -27,6 +27,11 @@ import OwnerLayout from "./components/Layout/OwnerLayout.jsx";
 import TenantLayout from "./components/Layout/TenantLayout.jsx";
 import OwnerAlerts from "./components/Alerts/OwnerAlerts.jsx";
 import TenantAlerts from "./components/Alerts/TenantAlerts.jsx";
+import OwnerProperties from "./components/Property/OwnerProperties.jsx";
+import TenantProperties from "./components/Property/TenantProperties.jsx";
+import OwnerPassbook from "./components/Passbook/OwnerPassbook.jsx";
+import SettleBalance from "./components/Passbook/SettleBalance.jsx";
+import TenantPassbook from "./components/Passbook/TenantPassbook.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,12 +45,17 @@ const router = createBrowserRouter(
           <Route path="/card" element={<PropertyCard />} />
           <Route path="/add-property" element={<AddProperty />} />
           <Route path="/owner-alerts" element={<OwnerAlerts />} />
+          <Route path="/owner-properties" element={<OwnerProperties />} />
+          <Route path="/owner-passbook" element={<OwnerPassbook />} />
+          <Route path="/record-payment" element={<SettleBalance />} />
         </Route>
         <Route element={<TenantLayout />}>
           <Route path="/tenant-dashboard" element={<TenantDashboard />} />
           <Route path="/find-property" element={<FindProperty />} />
           <Route path="/property/:id" element={<Property />} />
           <Route path="/tenant-alerts" element={<TenantAlerts />} />
+          <Route path="/tenant-properties" element={<TenantProperties />} />
+          <Route path="/tenant-passbook" element={<TenantPassbook />} />
         </Route>
       </Route>
     </Route>

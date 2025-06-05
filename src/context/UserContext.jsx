@@ -115,7 +115,6 @@ export const UserProvider = ({ children }) => {
     });
     if (response.ok) {
       const res = await response.json();
-      console.log(res);
       setRequests(res || []);
     }
   };

@@ -8,6 +8,7 @@ import {
   BookOpen,
   LogOut,
   BellDot,
+  House
 } from "lucide-react";
 import { useUser } from "../../context/UserContext";
 
@@ -31,6 +32,11 @@ export default function TenantLayout() {
       to: "/tenant-alerts",
     },
     {
+      name: "Properties",
+      icon: <House className="w-5 h-5" />,
+      to: "/tenant-properties",
+    },
+    {
       name: "Find Property",
       icon: <Search className="w-5 h-5" />,
       to: "/find-property",
@@ -38,7 +44,7 @@ export default function TenantLayout() {
     {
       name: "Passbook",
       icon: <BookOpen className="w-5 h-5" />,
-      to: "/passbook",
+      to: "/tenant-passbook",
     },
     {
       name: "Logout",

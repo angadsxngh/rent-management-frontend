@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardBody, Button } from "@heroui/react";
-import { Check, X } from "lucide-react";
+import { Check, X, CalendarClock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useUser } from "../../context/UserContext";
 
@@ -10,7 +10,7 @@ export default function Alerts() {
 
   useEffect(() => {
     fetchRequests();
-    setLoading(false)
+    setLoading(false);
   }, []);
 
   const handleAccept = async (res) => {
@@ -24,10 +24,15 @@ export default function Alerts() {
     fetchRequests();
   };
 
-  const handleReject = (id) => {
-    setRequests((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status: "rejected" } : r))
+  const handleReject = async (res) => {
+    await fetch(
+      `/api/v1/owners/delete-request/${res.property.id}?tenantId=${res.tenant.id}&tenantName=${res.tenant.name}`,
+      {
+        method: "POST",
+        credentials: "include",
+      }
     );
+    fetchRequests();
   };
 
   const getStatusStyle = (status) => {
@@ -40,6 +45,12 @@ export default function Alerts() {
         return "bg-yellow-100 text-yellow-700";
     }
   };
+
+  const formatDateTime = (datetime) =>
+    new Date(datetime).toLocaleString(undefined, {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
 
   return (
     <main className="flex-1 md:p-5 py-5 md:py-24">
@@ -70,21 +81,26 @@ export default function Alerts() {
           {requests.map((req) => (
             <Card key={req.id} className="shadow-lg rounded-2xl">
               <CardBody className="py-4 px-6 space-y-4">
-                <div className="flex justify-between items-center">
-                  {/* Info Section */}
+                {/* Header Info */}
+                <div className="flex justify-between items-start">
                   <div className="flex-1 pr-4">
                     <p className="text-indigo-700 font-semibold text-lg">
                       {req.tenant.name}
                     </p>
                     <p className="text-gray-600 text-sm">
-                      {req.property.address}, {req.property.city}
-                    </p>
-                    <p className="text-gray-600 text-sm">
+                      {req.property.address}, {req.property.city},{" "}
                       {req.property.country}
                     </p>
+
+                    {/* Payment Request Info */}
+                    {req.type === "paymentRequest" && (
+                      <p className="text-sm text-rose-600 font-medium mt-2">
+                        💰 Payment Recieved: ₹{req.amount}
+                      </p>
+                    )}
                   </div>
 
-                  {/* Property Image */}
+                  {/* Image */}
                   <div className="w-20 h-20 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
                     <img
                       src={req.property.imageUrl}
@@ -94,17 +110,31 @@ export default function Alerts() {
                   </div>
                 </div>
 
+                {/* Footer - Status + Time + Actions */}
                 <div className="flex items-center justify-between">
-                  {/* Status Badge */}
-                  <span
-                    className={`px-3 py-1 text-xs font-medium rounded-full capitalize ${getStatusStyle(
-                      req.status
-                    )}`}
-                  >
-                    {req.status}
-                  </span>
+                  {/* Left: Status badge and date if pending */}
+                  <div>
+                    <span
+                      className={`px-3 py-1 text-xs font-medium rounded-full capitalize ${getStatusStyle(
+                        req.status
+                      )}`}
+                    >
+                      {req.status}
+                    </span>
 
-                  {/* Action Buttons */}
+                    {req.status === "pending" && (
+                      <div className="">
+                        <p className="text-xs text-gray-500 mt-3">
+                          {new Date(req.createdAt).toLocaleString(undefined, {
+                            dateStyle: "medium",
+                            timeStyle: "short",
+                          })}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right: Date if accepted/rejected OR actions if pending */}
                   {req.status === "pending" ? (
                     <div className="flex space-x-2">
                       <Button
@@ -117,13 +147,18 @@ export default function Alerts() {
                       <Button
                         size="sm"
                         className="bg-red-100 text-red-600 hover:bg-red-200"
-                        onPress={() => handleReject(req.id)}
+                        onPress={() => handleReject(req)}
                       >
                         <X className="w-4 h-4" />
                       </Button>
                     </div>
                   ) : (
-                    <></>
+                    <p className="text-xs text-gray-500">
+                      {new Date(req.createdAt).toLocaleString(undefined, {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}
+                    </p>
                   )}
                 </div>
               </CardBody>

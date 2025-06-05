@@ -189,7 +189,7 @@ export default function LoginPage() {
                   <div className="flex justify-center mt-4">
                     <Button
                       onPress={handleOwnerClick}
-                      className="w-1/2 md:w-1/3"
+                      className="w-1/2 md:w-1/3 bg-indigo-700 font-semibold"
                       color="primary"
                     >
                       <LogIn className="h-5 w-5" />
@@ -225,7 +225,7 @@ export default function LoginPage() {
                     </NavLink>
                   </p>
                   <div className="flex justify-center mt-4">
-                    <Button onPress={handleTenantClick} className="w-1/2 md:w-1/3" color="primary">
+                    <Button onPress={handleTenantClick} className="w-1/2 md:w-1/3 bg-indigo-700 font-semibold"  color="primary">
                       <LogIn className="h-5 w-5" />
                       Login
                     </Button>

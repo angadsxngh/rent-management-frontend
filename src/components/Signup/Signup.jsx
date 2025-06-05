@@ -174,7 +174,7 @@ export default function SignupPage() {
                       </NavLink>
                     </p>
                     <div className="flex gap-2 justify-center">
-                      <Button onPress={handleOwnerClick} className="w-full sm:w-[40%]" color="primary">
+                      <Button onPress={handleOwnerClick} className="w-full sm:w-[40%] bg-indigo-700 font-semibold" color="primary">
                         <LogIn className="h-5 w-5" />
                         Sign Up
                       </Button>
@@ -196,7 +196,7 @@ export default function SignupPage() {
                       </NavLink>
                     </p>
                     <div className="flex gap-2 justify-center">
-                      <Button onPress={handleTenantClick} className="w-full sm:w-[40%]" color="primary">
+                      <Button onPress={handleTenantClick} className="w-full sm:w-[40%] bg-indigo-700 font-semibold" color="primary">
                         <LogIn className="h-5 w-5" />
                         Sign Up
                       </Button>
