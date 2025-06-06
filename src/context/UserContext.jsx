@@ -22,7 +22,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {}, [properties]);
 
-  const fetchRentals = async() => {
+  const   fetchRentals = async() => {
     try {
       const response = await fetch('/api/v1/tenants/properties', {
         method: 'GET',

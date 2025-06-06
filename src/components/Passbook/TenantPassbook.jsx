@@ -20,6 +20,7 @@ export default function TenantPassbook() {
           credentials: "include",
         });
         const data = await res.json();
+        console.log(data);
         setTransactions(data);
       } catch (err) {
         console.error("Failed to load transactions", err);
@@ -29,6 +30,10 @@ export default function TenantPassbook() {
     };
     if (user) fetchTransactions();
   }, [user]);
+
+  const handleNewPayment = () => {
+    navigate("/record-tpayment");
+  };
 
   return (
     <main className="py-10 flex-1 md:p-5 md:py-24">
@@ -44,6 +49,13 @@ export default function TenantPassbook() {
         <p className="text-gray-600 text-lg">
           View all rent payments made and transaction details
         </p>
+        <button
+          onClick={handleNewPayment}
+          className="mt-4 text-sm inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition"
+        >
+          <PlusCircle className="mr-2" size={20} />
+          Record New Payment
+        </button>
       </motion.div>
 
       {loading ? (
@@ -51,59 +63,94 @@ export default function TenantPassbook() {
       ) : (
         <section className="sm:px-6">
           {transactions.length > 0 ? (
-            <div className="overflow-x-auto border border-gray-200 rounded-lg shadow-sm">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                      Date
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                      Amount (₹)
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                      Mode
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                      Property
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                      Owner
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                      Note
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 bg-white">
-                  {transactions.map((tx, idx) => (
-                    <tr
-                      key={idx}
-                      className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                    >
-                      <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
-                        {new Date(tx.date).toLocaleDateString()}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-sm font-mono text-green-600">
-                        ₹{tx.amount.toLocaleString()}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
-                        {tx.mode}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700 max-w-xs truncate">
-                        {tx.address}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700 max-w-xs truncate">
-                        {tx.owner.name}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-600 italic max-w-xs truncate">
-                        {tx.note || "N/A"}
-                      </td>
+            <>
+              {/* Desktop Table View */}
+              <div className="hidden sm:block overflow-x-auto border border-gray-200 rounded-lg shadow-sm">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                        Date
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                        Amount (₹)
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                        Mode
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                        Property
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                        Owner
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                        Note
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 bg-white">
+                    {transactions.map((tx, idx) => (
+                      <tr
+                        key={idx}
+                        className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                      >
+                        <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                          {new Date(tx.date).toLocaleDateString()}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 text-sm font-mono text-green-600">
+                          ₹{tx.amount.toLocaleString()}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                          {tx.mode}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700 max-w-xs truncate">
+                          {tx.address}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700 max-w-xs truncate">
+                          {tx.owner.name}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-600 italic max-w-xs truncate">
+                          {tx.note || "N/A"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile Card View */}
+              <div className="space-y-4 sm:hidden">
+                {transactions.map((tx, idx) => (
+                  <Card key={idx} className="p-4 shadow-sm border rounded-xl">
+                    <CardContent className="space-y-1">
+                      <p className="text-xs text-gray-500">
+                        {new Date(tx.date).toLocaleDateString()}
+                      </p>
+                      <p className="text-base font-semibold text-green-600">
+                        ₹{tx.amount.toLocaleString()}
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        <span className="font-medium">Mode:</span> {tx.mode}
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        <span className="font-medium">Property:</span>{" "}
+                        {tx.address}
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        <span className="font-medium">Owner:</span>{" "}
+                        {tx.owner.name}
+                      </p>
+                      {tx.note && (
+                        <p className="text-sm italic text-gray-600">
+                          <span className="font-medium">Note:</span> {tx.note}
+                        </p>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </>
           ) : (
             <p className="text-sm text-gray-500 p-4">No transactions yet.</p>
           )}

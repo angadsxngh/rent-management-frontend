@@ -209,7 +209,9 @@ export default function SettleBalance() {
                     </svg>
                   </div>
                 ) : (
-                  "Record Payment"
+                  <div className="">
+                    <p className="text-white font-semibold">Record Payment</p>
+                  </div>
                 )}
               </Button>
             </CardBody>

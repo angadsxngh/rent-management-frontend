@@ -32,6 +32,7 @@ import TenantProperties from "./components/Property/TenantProperties.jsx";
 import OwnerPassbook from "./components/Passbook/OwnerPassbook.jsx";
 import SettleBalance from "./components/Passbook/SettleBalance.jsx";
 import TenantPassbook from "./components/Passbook/TenantPassbook.jsx";
+import PaymentRequest from "./components/Passbook/PaymentRequest.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -56,6 +57,7 @@ const router = createBrowserRouter(
           <Route path="/tenant-alerts" element={<TenantAlerts />} />
           <Route path="/tenant-properties" element={<TenantProperties />} />
           <Route path="/tenant-passbook" element={<TenantPassbook />} />
+          <Route path="/record-tpayment" element={<PaymentRequest />} />
         </Route>
       </Route>
     </Route>
