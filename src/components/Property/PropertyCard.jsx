@@ -4,6 +4,7 @@ import { Button } from "@heroui/react";
 import { useEffect } from "react";
 import { Trash2 } from "lucide-react";
 import { useUser } from "../../context/UserContext";
+import {addToast, ToastProvider} from "@heroui/toast";
 
 export default function PropertyCard() {
   const { user } = useUser();
@@ -20,8 +21,6 @@ export default function PropertyCard() {
 
     if (!confirmDelete) return;
 
-    console.log("id:", property.id);
-
     const response = await fetch("/api/v1/owners/delete-property", {
       method: "POST",
       credentials: "include",
@@ -29,10 +28,15 @@ export default function PropertyCard() {
       body: JSON.stringify({ propertyId: property.id }),
     });
 
-    console.log("response", response);
+    addToast({
+      title: "Property deleted successfully",
+      timeout: 2000
+    })
 
     if (response.ok) {
-      navigate("/owner-dashboard");
+      navigate("/owner-properties");
+    } else{
+      console.log(response)
     }
   };
 
@@ -78,11 +82,9 @@ export default function PropertyCard() {
           )}
 
           {user.id === property.ownerId && (
-            <NavLink to={"/owner-dashboard"}>
               <button onClick={handleClick}>
                 <Trash2 className="text-red-600 hover:text-black" />
               </button>
-            </NavLink>
           )}
         </div>
         <img

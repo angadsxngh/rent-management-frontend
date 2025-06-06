@@ -3,14 +3,18 @@ import { Card, CardBody } from "@heroui/react";
 import { motion } from "framer-motion";
 import { useUser } from "../../context/UserContext";
 import { CalendarClock, IndianRupee } from "lucide-react";
+import Spinner from "../Spinner/Spinner"; // added Spinner
 
 export default function Alerts() {
   const { alerts, fetchAlerts } = useUser();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchAlerts();
-    setLoading(false);
+    const load = async () => {
+      await fetchAlerts();
+      setLoading(false);
+    };
+    load();
   }, []);
 
   const getStatusStyle = (status) => {
@@ -23,6 +27,7 @@ export default function Alerts() {
         return "bg-yellow-100 text-yellow-700";
     }
   };
+
   const formatDateTime = (datetime) =>
     new Date(datetime).toLocaleString(undefined, {
       dateStyle: "medium",
@@ -45,14 +50,12 @@ export default function Alerts() {
         </p>
       </motion.div>
 
-      {alerts.length === 0 && (
-        <div className="text-gray-600 text-md">No alerts available</div>
-      )}
-
       {loading ? (
         <div className="flex justify-center items-center h-40">
-          <div className="w-10 h-10 border-4 border-indigo-300 border-t-transparent rounded-full animate-spin" />
+          <Spinner />
         </div>
+      ) : alerts.length === 0 ? (
+        <div className="text-gray-600 text-md">No alerts available</div>
       ) : (
         <div className="flex flex-col gap-4">
           {alerts.map((req) => (
@@ -71,7 +74,6 @@ export default function Alerts() {
                       {req.property.country}
                     </p>
                   </div>
-
                   <div className="w-20 h-20 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
                     <img
                       src={req.property.imageUrl}
@@ -81,7 +83,7 @@ export default function Alerts() {
                   </div>
                 </div>
 
-                {/* Body Content Based on Type */}
+                {/* Body */}
                 {req.type === "request" ? (
                   <div>
                     <p className="text-sm text-gray-600">

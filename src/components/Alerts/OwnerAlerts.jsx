@@ -1,56 +1,74 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardBody, Button } from "@heroui/react";
-import { Check, X, CalendarClock } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useUser } from "../../context/UserContext";
+import Spinner from "../Spinner/Spinner";
 
 export default function Alerts() {
   const { requests, fetchRequests } = useUser();
   const [loading, setLoading] = useState(true);
+  const [loadingRequestId, setLoadingRequestId] = useState(null);
+  const [loadingActionType, setLoadingActionType] = useState(null);
 
   useEffect(() => {
-    fetchRequests();
-    setLoading(false);
+    const loadRequests = async () => {
+      await fetchRequests();
+      setLoading(false);
+    };
+    loadRequests();
   }, []);
 
   const handleAccept = async (res) => {
-    await fetch(
-      `/api/v1/owners/accept-request/${res.property.id}?tenantId=${res.tenant.id}&tenantName=${res.tenant.name}`,
-      {
-        method: "POST",
-        credentials: "include",
+    setLoadingRequestId(res.id);
+    setLoadingActionType("accept");
+    try {
+      if (res.type === "request") {
+        await fetch(
+          `/api/v1/owners/accept-request/${res.property.id}?tenantId=${res.tenant.id}&tenantName=${res.tenant.name}`,
+          { method: "POST", credentials: "include" }
+        );
+      } else if (res.type === "paymentRequest") {
+        await fetch(
+          `/api/v1/owners/accept-payment/${res.property.id}?id=${res.id}`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify({ amount: res.amount }),
+          }
+        );
       }
-    );
-    fetchRequests();
-  };
-
-  const handleReject = async (res) => {
-    await fetch(
-      `/api/v1/owners/delete-request/${res.property.id}?tenantId=${res.tenant.id}&tenantName=${res.tenant.name}`,
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
-    fetchRequests();
-  };
-
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case "accepted":
-        return "bg-green-100 text-green-700";
-      case "rejected":
-        return "bg-red-100 text-red-600";
-      default:
-        return "bg-yellow-100 text-yellow-700";
+    } finally {
+      await fetchRequests();
+      setLoadingRequestId(null);
+      setLoadingActionType(null);
     }
   };
 
-  const formatDateTime = (datetime) =>
-    new Date(datetime).toLocaleString(undefined, {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
+  const handleReject = async (res) => {
+    setLoadingRequestId(res.id);
+    setLoadingActionType("reject");
+    try {
+      if (res.type === "request") {
+        await fetch(
+          `/api/v1/owners/delete-request/${res.property.id}?tenantId=${res.tenant.id}&tenantName=${res.tenant.name}`,
+          { method: "POST", credentials: "include" }
+        );
+      } else if (res.type === "paymentRequest") {
+        await fetch(`/api/v1/owners/reject-payment/${res.id}`, {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({ amount: res.amount }),
+        });
+      }
+    } finally {
+      await fetchRequests();
+      setLoadingRequestId(null);
+      setLoadingActionType(null);
+    }
+  };
 
   return (
     <main className="flex-1 md:p-5 py-5 md:py-24">
@@ -68,20 +86,17 @@ export default function Alerts() {
         </p>
       </motion.div>
 
-      {requests.length === 0 && (
-        <div className="text-gray-600 text-md">No requests available</div>
-      )}
-
       {loading ? (
         <div className="flex justify-center items-center h-40">
-          <div className="w-10 h-10 border-4 border-indigo-300 border-t-transparent rounded-full animate-spin" />
+          <Spinner />
         </div>
+      ) : requests.length === 0 ? (
+        <div className="text-gray-600 text-md">No requests available</div>
       ) : (
         <div className="flex flex-col gap-4">
           {requests.map((req) => (
             <Card key={req.id} className="shadow-lg rounded-2xl">
               <CardBody className="py-4 px-6 space-y-4">
-                {/* Header Info */}
                 <div className="flex justify-between items-start">
                   <div className="flex-1 pr-4">
                     <p className="text-indigo-700 font-semibold text-lg">
@@ -91,16 +106,20 @@ export default function Alerts() {
                       {req.property.address}, {req.property.city},{" "}
                       {req.property.country}
                     </p>
-
-                    {/* Payment Request Info */}
                     {req.type === "paymentRequest" && (
-                      <p className="text-sm text-rose-600 font-medium mt-2">
-                        💰 Payment Recieved: ₹{req.amount}
+                      <p
+                        className={`text-sm font-medium mt-2 ${
+                          req.status === "accepted"
+                            ? "text-green-600"
+                            : req.status === "rejected"
+                            ? "text-red-600"
+                            : "text-rose-600"
+                        }`}
+                      >
+                        💰 Payment Request: ₹{req.amount}
                       </p>
                     )}
                   </div>
-
-                  {/* Image */}
                   <div className="w-20 h-20 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
                     <img
                       src={req.property.imageUrl}
@@ -110,55 +129,63 @@ export default function Alerts() {
                   </div>
                 </div>
 
-                {/* Footer - Status + Time + Actions */}
                 <div className="flex items-center justify-between">
-                  {/* Left: Status badge and date if pending */}
                   <div>
                     <span
-                      className={`px-3 py-1 text-xs font-medium rounded-full capitalize ${getStatusStyle(
-                        req.status
-                      )}`}
+                      className={`px-3 py-1 text-xs font-medium rounded-full capitalize ${
+                        req.status == "rejected"
+                          ? "bg-red-100 text-red-700"
+                          : req.status === "accepted"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
                     >
                       {req.status}
                     </span>
-
-                    {req.status === "pending" && (
-                      <div className="">
-                        <p className="text-xs text-gray-500 mt-3">
-                          {new Date(req.createdAt).toLocaleString(undefined, {
-                            dateStyle: "medium",
-                            timeStyle: "short",
-                          })}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Right: Date if accepted/rejected OR actions if pending */}
-                  {req.status === "pending" ? (
-                    <div className="flex space-x-2">
-                      <Button
-                        size="sm"
-                        className="bg-green-100 text-green-700 hover:bg-green-200"
-                        onPress={() => handleAccept(req)}
-                      >
-                        <Check className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="bg-red-100 text-red-600 hover:bg-red-200"
-                        onPress={() => handleReject(req)}
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ) : (
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 mt-2">
                       {new Date(req.createdAt).toLocaleString(undefined, {
                         dateStyle: "medium",
                         timeStyle: "short",
                       })}
                     </p>
+                  </div>
+
+                  {req.status === "pending" && (
+                    <div className="flex space-x-2">
+                      <Button
+                        size="sm"
+                        disabled={
+                          loadingRequestId === req.id &&
+                          loadingActionType === "accept"
+                        }
+                        className="bg-green-100 text-green-700 hover:bg-green-200 disabled:opacity-70"
+                        onPress={() => handleAccept(req)}
+                      >
+                        {loadingRequestId === req.id &&
+                        loadingActionType === "accept" ? (
+                          <Spinner size={4} />
+                        ) : (
+                          <Check className="w-4 h-4" />
+                        )}
+                      </Button>
+
+                      <Button
+                        size="sm"
+                        disabled={
+                          loadingRequestId === req.id &&
+                          loadingActionType === "reject"
+                        }
+                        className="bg-red-100 text-red-600 hover:bg-red-200 disabled:opacity-70"
+                        onPress={() => handleReject(req)}
+                      >
+                        {loadingRequestId === req.id &&
+                        loadingActionType === "reject" ? (
+                          <Spinner size={4} />
+                        ) : (
+                          <X className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
                   )}
                 </div>
               </CardBody>
