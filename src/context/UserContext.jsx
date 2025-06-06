@@ -4,6 +4,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   // const [owner, setOwner] = useState(false)
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
@@ -24,7 +25,7 @@ export const UserProvider = ({ children }) => {
 
   const   fetchRentals = async() => {
     try {
-      const response = await fetch('/api/v1/tenants/properties', {
+      const response = await fetch(`${BASE_URL}/api/v1/tenants/properties`, {
         method: 'GET',
         credentials: 'include'
       })
@@ -40,7 +41,7 @@ export const UserProvider = ({ children }) => {
 
   const fetchProperties = async () => {
     try {
-      const response = await fetch("/api/v1/owners/your-properties", {
+      const response = await fetch(`${BASE_URL}/api/v1/owners/your-properties`, {
         method: "GET",
         credentials: "include",
       });
@@ -59,13 +60,13 @@ export const UserProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      let response = await fetch("/api/v1/owners/get-user", {
+      let response = await fetch(`${BASE_URL}/api/v1/owners/get-user`, {
         method: "GET",
         credentials: "include",
       });
 
       if (!response.ok) {
-        response = await fetch("/api/v1/tenants/get-user", {
+        response = await fetch(`${BASE_URL}/api/v1/tenants/get-user`, {
           method: "GET",
           credentials: "include",
         });
@@ -91,7 +92,7 @@ export const UserProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await fetch("/api/v1/tenants/logout", {
+      await fetch(`${BASE_URL}/api/v1/tenants/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -109,7 +110,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const fetchRequests = async () => {
-    const response = await fetch("/api/v1/owners/get-requests", {
+    const response = await fetch(`${BASE_URL}/api/v1/owners/get-requests`, {
       method: "GET",
       credentials: "include",
     });
@@ -120,7 +121,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const fetchAlerts = async () => {
-    const response = await fetch("/api/v1/tenants/get-alerts", {
+    const response = await fetch(`${BASE_URL}/api/v1/tenants/get-alerts`, {
       method: "GET",
       credentials: "include",
     });

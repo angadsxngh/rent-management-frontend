@@ -28,7 +28,7 @@ export default function LoginPage() {
     e.preventDefault;
 
     try {
-      const res = await fetch("/api/v1/owners/login", {
+      const res = await fetch("https://rentease-lmji.onrender.com/api/v1/owners/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -86,7 +86,7 @@ export default function LoginPage() {
     e.preventDefault;
 
     try {
-      const res = await fetch("/api/v1/tenants/login", {
+      const res = await fetch(`${BASE_URL}/api/v1/tenants/login`, {
         method: "POST",
         credentials: "include",
         headers: {

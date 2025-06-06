@@ -6,6 +6,7 @@ import { useUser } from "../../context/UserContext";
 import Spinner from "../Spinner/Spinner";
 
 export default function Alerts() {
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL
   const { requests, fetchRequests } = useUser();
   const [loading, setLoading] = useState(true);
   const [loadingRequestId, setLoadingRequestId] = useState(null);
@@ -25,12 +26,12 @@ export default function Alerts() {
     try {
       if (res.type === "request") {
         await fetch(
-          `/api/v1/owners/accept-request/${res.property.id}?tenantId=${res.tenant.id}&tenantName=${res.tenant.name}`,
+          `${BASE_URL}/api/v1/owners/accept-request/${res.property.id}?tenantId=${res.tenant.id}&tenantName=${res.tenant.name}`,
           { method: "POST", credentials: "include" }
         );
       } else if (res.type === "paymentRequest") {
         await fetch(
-          `/api/v1/owners/accept-payment/${res.property.id}?id=${res.id}`,
+          `${BASE_URL}/api/v1/owners/accept-payment/${res.property.id}?id=${res.id}`,
           {
             method: "POST",
             credentials: "include",
@@ -52,11 +53,11 @@ export default function Alerts() {
     try {
       if (res.type === "request") {
         await fetch(
-          `/api/v1/owners/delete-request/${res.property.id}?tenantId=${res.tenant.id}&tenantName=${res.tenant.name}`,
+          `${BASE_URL}/api/v1/owners/delete-request/${res.property.id}?tenantId=${res.tenant.id}&tenantName=${res.tenant.name}`,
           { method: "POST", credentials: "include" }
         );
       } else if (res.type === "paymentRequest") {
-        await fetch(`/api/v1/owners/reject-payment/${res.id}`, {
+        await fetch(`${BASE_URL}/api/v1/owners/reject-payment/${res.id}`, {
           method: "POST",
           credentials: "include",
           headers: { "Content-type": "application/json" },

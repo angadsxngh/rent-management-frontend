@@ -19,11 +19,12 @@ export default function Passbook() {
   const [loading, setLoading] = useState(true);
   const [showTransactions, setShowTransactions] = useState(true);
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const res = await fetch(`/api/v1/owners/fetch-transactions`, {
+        const res = await fetch(`${BASE_URL}/api/v1/owners/fetch-transactions`, {
           method: "GET",
           credentials: "include",
         });

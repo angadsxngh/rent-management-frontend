@@ -16,6 +16,7 @@ export default function SettleBalance() {
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("Cash");
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const navigate = useNavigate()
 
@@ -46,7 +47,7 @@ export default function SettleBalance() {
 
     try {
       setLoading(true);
-      const res = await fetch(`/api/v1/owners/settle-up/${selectedId}`, {
+      const res = await fetch(`${BASE_URL}/api/v1/owners/settle-up/${selectedId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
