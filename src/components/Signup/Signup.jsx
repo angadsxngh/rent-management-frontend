@@ -162,11 +162,11 @@ export default function SignupPage() {
               >
                 <Tab key="owner" title="Owner">
                   <form className="flex flex-col gap-4 mt-6">
-                    <Input isRequired onChange={handleChange} label="Full Name" name="name" placeholder="Enter your name" type="text" />
-                    <Input isRequired onChange={handleChange} label="Email" name="email" placeholder="example@email.com" type="email" />
-                    <Input isRequired onChange={handleChange} label="Phone" name="phone" placeholder="+91 99999-99999" type="text" />
-                    <Input isRequired onChange={handleChange} label="Password" name="password" placeholder="Create a password" type="password" />
-                    <Input isRequired onChange={handleChange} label="Confirm Password" name="confirmpassword" placeholder="Confirm your password" type="password" />
+                    <Input isRequired onChange={handleChange} label="Full Name" name="name" type="text" />
+                    <Input isRequired onChange={handleChange} label="Email" name="email"type="email" />
+                    <Input isRequired onChange={handleChange} label="Phone" name="phone"  type="text" />
+                    <Input isRequired onChange={handleChange} label="Password" name="password"type="password" />
+                    <Input isRequired onChange={handleChange} label="Confirm Password" name="confirmpassword"  type="password" />
                     <p className="text-center text-sm cursor-pointer mt-6">
                       Already have an account?{" "}
                       <NavLink to={"/login"} className="hover:underline text-blue-600">
@@ -174,7 +174,7 @@ export default function SignupPage() {
                       </NavLink>
                     </p>
                     <div className="flex gap-2 justify-center">
-                      <Button onPress={handleOwnerClick} className="w-full sm:w-[40%]" color="primary">
+                      <Button onPress={handleOwnerClick} className="w-full sm:w-[40%] bg-indigo-700 font-semibold" color="primary">
                         <LogIn className="h-5 w-5" />
                         Sign Up
                       </Button>
@@ -184,11 +184,11 @@ export default function SignupPage() {
 
                 <Tab key="tenant" title="Tenant">
                   <form className="flex flex-col gap-4 mt-6">
-                    <Input isRequired onChange={handleChange} label="Full Name" name="name" placeholder="Enter your name" type="text" />
-                    <Input isRequired onChange={handleChange} label="Email" name="email" placeholder="example@email.com" type="email" />
-                    <Input isRequired onChange={handleChange} label="Phone" name="phone" placeholder="+91 99999-99999" type="text" />
-                    <Input isRequired onChange={handleChange} label="Password" name="password" placeholder="Create a password" type="password" />
-                    <Input isRequired onChange={handleChange} label="Confirm Password" name="confirmpassword" placeholder="Confirm your password" type="password" />
+                    <Input isRequired onChange={handleChange} label="Full Name" name="name" type="text" />
+                    <Input isRequired onChange={handleChange} label="Email" name="email"  type="email" />
+                    <Input isRequired onChange={handleChange} label="Phone" name="phone" type="text" />
+                    <Input isRequired onChange={handleChange} label="Password" name="password"  type="password" />
+                    <Input isRequired onChange={handleChange} label="Confirm Password" name="confirmpassword" type="password" />
                     <p className="text-center text-sm cursor-pointer mt-6">
                       Already have an account?{" "}
                       <NavLink to={"/login"} className="hover:underline text-blue-600">
@@ -196,7 +196,7 @@ export default function SignupPage() {
                       </NavLink>
                     </p>
                     <div className="flex gap-2 justify-center">
-                      <Button onPress={handleTenantClick} className="w-full sm:w-[40%]" color="primary">
+                      <Button onPress={handleTenantClick} className="w-full sm:w-[40%] bg-indigo-700 font-semibold" color="primary">
                         <LogIn className="h-5 w-5" />
                         Sign Up
                       </Button>

@@ -168,7 +168,6 @@ export default function LoginPage() {
                     isRequired
                     name="phone"
                     label="Phone"
-                    placeholder="9876543210"
                     type="text"
                   />
                   <Input
@@ -176,7 +175,6 @@ export default function LoginPage() {
                     name="password"
                     isRequired
                     label="Password"
-                    placeholder="Enter your password"
                     type="password"
                   />
                   <p className="text-center text-sm mt-6">
@@ -191,7 +189,7 @@ export default function LoginPage() {
                   <div className="flex justify-center mt-4">
                     <Button
                       onPress={handleOwnerClick}
-                      className="w-1/2 md:w-1/3"
+                      className="w-1/2 md:w-1/3 bg-indigo-700 font-semibold"
                       color="primary"
                     >
                       <LogIn className="h-5 w-5" />
@@ -208,7 +206,6 @@ export default function LoginPage() {
                     isRequired
                     label="Phone"
                     name="phone"
-                    placeholder="9876543210"
                     type="text"
                   />
                   <Input
@@ -216,7 +213,6 @@ export default function LoginPage() {
                     isRequired
                     name="password"
                     label="Password"
-                    placeholder="Enter your password"
                     type="password"
                   />
                   <p className="text-center text-sm mt-6">
@@ -229,7 +225,7 @@ export default function LoginPage() {
                     </NavLink>
                   </p>
                   <div className="flex justify-center mt-4">
-                    <Button onPress={handleTenantClick} className="w-1/2 md:w-1/3" color="primary">
+                    <Button onPress={handleTenantClick} className="w-1/2 md:w-1/3 bg-indigo-700 font-semibold"  color="primary">
                       <LogIn className="h-5 w-5" />
                       Login
                     </Button>
