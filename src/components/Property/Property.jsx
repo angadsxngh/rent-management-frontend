@@ -10,7 +10,7 @@ export default function Property() {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
   const [property, setProperty] = useState(location.state || null);
   const [loading, setLoading] = useState(!property);
   const [requestSent, setRequestSent] = useState(false);

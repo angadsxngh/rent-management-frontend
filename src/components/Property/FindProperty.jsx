@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { Country, State, City } from "country-state-city";
 
 export default function FindProperty() {
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
   const [hasSearched, setHasSearched] = useState(false);
 
   const allCountries = Country.getAllCountries();

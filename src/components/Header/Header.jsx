@@ -24,7 +24,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   const { user, logout, setUser, refreshUser } = useUser();
 

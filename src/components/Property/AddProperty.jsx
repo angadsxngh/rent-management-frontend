@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 export default function AddProperty() {
   const { user } = useUser();
   const navigate = useNavigate();
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   const types = [
     { label: "Agricultural", key: "AGR" },

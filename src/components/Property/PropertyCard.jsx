@@ -11,7 +11,7 @@ export default function PropertyCard() {
   const navigate = useNavigate();
   const location = useLocation();
   const property = location.state;
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
   const handleClick = async () => {
     if (!property.id) return;
 

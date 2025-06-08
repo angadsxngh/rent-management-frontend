@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { addToast } from "@heroui/react";
 
 export default function SignupPage() {
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   const navigate = useNavigate();
 

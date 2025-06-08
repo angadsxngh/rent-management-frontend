@@ -10,7 +10,7 @@ export default function PaymentRequest() {
   const [note, setNote] = useState("");
   const [mode, setMode] = useState("UPI");
   const [loading, setLoading] = useState(false);
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   useEffect(() => {
     fetchRentals();

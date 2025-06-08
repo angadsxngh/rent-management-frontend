@@ -11,7 +11,7 @@ export default function TenantPassbook() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   useEffect(() => {
     const fetchTransactions = async () => {

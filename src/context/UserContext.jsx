@@ -4,7 +4,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   // const [owner, setOwner] = useState(false)
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");

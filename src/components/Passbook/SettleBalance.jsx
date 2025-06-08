@@ -16,7 +16,7 @@ export default function SettleBalance() {
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("Cash");
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   const navigate = useNavigate()
 
