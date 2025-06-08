@@ -11,7 +11,7 @@ export default function PropertyCard() {
   const navigate = useNavigate();
   const location = useLocation();
   const property = location.state;
-
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
   const handleClick = async () => {
     if (!property.id) return;
 
@@ -21,7 +21,7 @@ export default function PropertyCard() {
 
     if (!confirmDelete) return;
 
-    const response = await fetch("/api/v1/owners/delete-property", {
+    const response = await fetch(`${BASE_URL}/api/v1/owners/delete-property`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-type": "application/json" },

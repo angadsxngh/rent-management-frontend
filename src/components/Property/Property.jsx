@@ -10,13 +10,13 @@ export default function Property() {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
-
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
   const [property, setProperty] = useState(location.state || null);
   const [loading, setLoading] = useState(!property);
   const [requestSent, setRequestSent] = useState(false);
 
   const handleAdd = async () => {
-    const response = await fetch(`/api/v1/tenants/create-request/${property.id}`, {
+    const response = await fetch(`${BASE_URL}/api/v1/tenants/create-request/${property.id}`, {
       method: 'POST',
       credentials: 'include',
     });
@@ -33,7 +33,7 @@ export default function Property() {
 
   useEffect(() => {
     if (id && !property) {
-      fetch(`/api/v1/tenants/property/${id}`, {
+      fetch(`${BASE_URL}/api/v1/tenants/property/${id}`, {
         method: "GET",
         credentials: "include",
       })

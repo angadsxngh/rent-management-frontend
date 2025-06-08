@@ -24,6 +24,8 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
+
   const { user, logout, setUser, refreshUser } = useUser();
 
   const navigate = useNavigate();
@@ -35,13 +37,13 @@ export default function Header() {
   }, [user]);
 
   const logoutUser = async () => {
-    let res = await fetch("/api/v1/owners/logout", {
+    let res = await fetch(`${BASE_URL}/api/v1/owners/logout`, {
       method: "POST",
       credentials: "include",
     });
 
     if (!res.ok) {
-      res = await fetch("/api/v1/tenants/logout", {
+      res = await fetch(`${BASE_URL}/api/v1/tenants/logout`, {
         method: "POST",
         credentials: "include",
       });

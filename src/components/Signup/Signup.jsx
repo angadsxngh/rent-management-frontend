@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { addToast } from "@heroui/react";
 
 export default function SignupPage() {
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   const navigate = useNavigate();
 
@@ -30,7 +31,7 @@ export default function SignupPage() {
 
   const handleOwnerClick = async() => {
     try {
-      const res = await fetch('/api/v1/owners/register', {
+      const res = await fetch(`${BASE_URL}/api/v1/owners/register`, {
         method: 'POST',
         credentials: 'include',
         headers:{
@@ -85,7 +86,7 @@ export default function SignupPage() {
 
   const handleTenantClick = async() => {
     try {
-      const res = await fetch('/api/v1/tenants/register', {
+      const res = await fetch(`${BASE_URL}/api/v1/tenants/register`, {
         method: 'POST',
         credentials: 'include',
         headers:{

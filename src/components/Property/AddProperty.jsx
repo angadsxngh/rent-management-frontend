@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 export default function AddProperty() {
   const { user } = useUser();
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   const types = [
     { label: "Agricultural", key: "AGR" },
@@ -119,7 +120,7 @@ export default function AddProperty() {
       }
       console.log(payload);
 
-      const response = await fetch("/api/v1/owners/add-property", {
+      const response = await fetch(`${BASE_URL}/api/v1/owners/add-property`, {
         method: "POST",
         credentials: "include",
         body: payload,

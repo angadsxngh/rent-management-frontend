@@ -10,6 +10,7 @@ export default function PaymentRequest() {
   const [note, setNote] = useState("");
   const [mode, setMode] = useState("UPI");
   const [loading, setLoading] = useState(false);
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   useEffect(() => {
     fetchRentals();
@@ -29,7 +30,7 @@ export default function PaymentRequest() {
 
     try {
       setLoading(true);
-      const res = await fetch(`/api/v1/tenants/create-payment-request/${rentedProperty.id}`, {
+      const res = await fetch(`${BASE_URL}/api/v1/tenants/create-payment-request/${rentedProperty.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
