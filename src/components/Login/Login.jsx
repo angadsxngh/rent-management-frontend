@@ -8,6 +8,7 @@ import { addToast } from "@heroui/react";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
+  const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
   const navigate = useNavigate()
 
@@ -28,7 +29,7 @@ export default function LoginPage() {
     e.preventDefault;
 
     try {
-      const res = await fetch("https://rentease-lmji.onrender.com/api/v1/owners/login", {
+      const res = await fetch(`${BASE_URL}/api/v1/owners/login`, {
         method: "POST",
         credentials: "include",
         headers: {
