@@ -1,13 +1,18 @@
 // components/Layout/OwnerLayout.jsx
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { LayoutDashboard, Plus, Bell, BookOpen, LogOut, BellDot, House } from "lucide-react";
+import { LayoutDashboard, Plus, Bell, BookOpen, LogOut, BellDot, House, User } from "lucide-react";
 import { useUser } from "../../context/UserContext";
 
 export default function OwnerLayout() {
   const { user, logout, requests } = useUser();
 
   const navItems = [
+    {
+      name: "Profile",
+      icon: <User className="w-5 h-5" />,
+      to: "/owner-profile"
+    },
     {
       name: "Dashboard",
       icon: <LayoutDashboard className="w-5 h-5" />,
