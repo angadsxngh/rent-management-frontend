@@ -35,6 +35,9 @@ import TenantPassbook from "./components/Passbook/TenantPassbook.jsx";
 import PaymentRequest from "./components/Passbook/PaymentRequest.jsx";
 import OwnerProfile from "./components/Profile/OwnerProfile.jsx";
 import TenantProfile from "./components/Profile/TenantProfile.jsx";
+import PrivacyPolicy from "./components/Pages/Policy.jsx";
+import TermsAndConditions from "./components/Pages/TnC.jsx";
+import CancellationsAndRefunds from "./components/Pages/RnC.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -52,6 +55,15 @@ const router = createBrowserRouter(
           <Route path="/owner-properties" element={<OwnerProperties />} />
           <Route path="/owner-passbook" element={<OwnerPassbook />} />
           <Route path="/record-payment" element={<SettleBalance />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route
+            path="/terms-and-conditions"
+            element={<TermsAndConditions />}
+          />
+          <Route
+            path="/refunds-and-cancellations"
+            element={<CancellationsAndRefunds />}
+          />
         </Route>
         <Route element={<TenantLayout />}>
           <Route path="/tenant-profile" element={<TenantProfile />} />
@@ -62,6 +74,15 @@ const router = createBrowserRouter(
           <Route path="/tenant-properties" element={<TenantProperties />} />
           <Route path="/tenant-passbook" element={<TenantPassbook />} />
           <Route path="/record-tpayment" element={<PaymentRequest />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route
+            path="/terms-and-conditions"
+            element={<TermsAndConditions />}
+          />
+          <Route
+            path="/refunds-and-cancellations"
+            element={<CancellationsAndRefunds />}
+          />
         </Route>
       </Route>
     </Route>
